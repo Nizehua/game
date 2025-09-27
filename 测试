@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>乘法练习 - 连续答对挑战</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background-color: #f0f8ff;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    #streak {
+      font-size: 1.3em;
+      color: #e67e22;
+      margin: 10px;
+    }
+    #problem {
+      font-size: 2.5em;
+      margin: 20px;
+      font-weight: bold;
+    }
+    input {
+      font-size: 1.4em;
+      padding: 12px;
+      width: 120px;
+      text-align: center;
+      margin: 10px;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #result {
+      font-size: 1.6em;
+      margin: 20px;
+      height: 40px;
+      font-weight: bold;
+    }
+    .correct { color: green; }
+    .wrong { color: red; }
+  </style>
+</head>
+<body>
+
+  <h1>🎯 乘法练习</h1>
+  <div id="streak">✅ 已连续答对：0 题</div>
+  <div id="problem">6 × 7 = ?</div>
+  <input type="number" id="answer" autofocus />
+  <br />
+  <button onclick="check()">提交</button>
+  <button onclick="next()">下一题</button>
+  <div id="result"></div>
+
+  <script>
+    let correctAnswer;
+    let streak = 0; // 连续答对计数器
+
+    function next() {
+      const a = Math.floor(Math.random() * 10); // 0-9
+      const b = Math.floor(Math.random() * 10);
+      correctAnswer = a * b;
+      document.getElementById("problem").textContent = `${a} × ${b} = ?`;
+      document.getElementById("answer").value = "";
+      document.getElementById("result").textContent = "";
+      document.getElementById("answer").focus();
+    }
+
+    function check() {
+      const user = parseInt(document.getElementById("answer").value);
+      const resultDiv = document.getElementById("result");
+
+      if (isNaN(user)) {
+        resultDiv.textContent = "请输入一个数字！";
+        resultDiv.className = "wrong";
+        return;
+      }
+
+      if (user === correctAnswer) {
+        streak++; // 连续答对 +1
+        resultDiv.textContent = "🎉 正确！";
+        resultDiv.className = "correct";
+        // 更新连续答对显示
+        document.getElementById("streak").textContent = `✅ 已连续答对：${streak} 题`;
+        // 自动下一题
+        setTimeout(next, 800);
+      } else {
+        // 答错，清零
+        resultDiv.textContent = `❌ 错了！正确答案是 ${correctAnswer}`;
+        resultDiv.className = "wrong";
+        streak = 0; // 清零
+        document.getElementById("streak").textContent = `✅ 已连续答对：0 题`;
+      }
+    }
+
+    // 初始化第一题
+    next();
+  </script>
+
+</body>
+</html>
