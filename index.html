@@ -23,17 +23,14 @@
       overflow: hidden;
     }
     
-    /* 蜡笔小新背景 */
+    /* 蜡笔小新背景 - 添加备用背景 */
     .shinchan-bg {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('image/蜡笔小新.jpg');
-      background-size: cover;
-      background-position: center;
-      opacity: 0.15;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
       z-index: -1;
     }
     
@@ -79,12 +76,14 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       animation: bounce 2s infinite alternate;
       overflow: hidden;
+      background: #ff6b8b;
     }
     
     .start-shinchan img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
     
     .start-btn {
@@ -205,12 +204,14 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       animation: bounce 2s infinite alternate;
       overflow: hidden;
+      background: #ff6b8b;
     }
     
     .shinchan-character img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
     
     @keyframes bounce {
@@ -302,7 +303,7 @@
       line-height: 1.4;
     }
     
-    /* 答题框样式 - 增大并居中 */
+    /* 答题框样式 */
     .input-container {
       position: relative;
       display: flex;
@@ -471,12 +472,14 @@
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       animation: bounce 1s infinite alternate;
       overflow: hidden;
+      background: #ff6b8b;
     }
     
     .encouragement-shinchan img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
     
     .encouragement-message {
@@ -599,7 +602,8 @@
     <h1 class="start-title">🎯 数学小达人</h1>
     <p class="start-subtitle">和蜡笔小新一起学数学！</p>
     <div class="start-shinchan">
-      <img src="image/OIP-C.webp" alt="蜡笔小新">
+      <!-- 图片加载失败时显示文字 -->
+      <span style="display:none;">小新</span>
     </div>
     <button class="start-btn" id="startBtn">开始挑战</button>
   </div>
@@ -618,7 +622,7 @@
   <div class="encouragement-popup" id="encouragementPopup">
     <div class="encouragement-content">
       <div class="encouragement-shinchan">
-        <img src="image/nizihua.jpg" alt="蜡笔小新">
+        <span style="display:none;">小新</span>
       </div>
       <div class="encouragement-message">你好棒啊，都连续答对十道了！</div>
       <div class="encouragement-subtitle">继续加油，动感超人！</div>
@@ -632,7 +636,7 @@
       <h1>🎯 数学小达人</h1>
       <p class="subtitle">和蜡笔小新一起学数学！</p>
       <div class="shinchan-character">
-        <img src="image/nizihua.jpg" alt="蜡笔小新">
+        <span style="display:none;">小新</span>
       </div>
     </div>
     
@@ -706,8 +710,18 @@
     const encouragementPopup = document.getElementById("encouragementPopup");
     const closeEncouragementBtn = document.getElementById("closeEncouragement");
 
+    // 图片路径配置
+    const imagePaths = {
+      background: 'image/蜡笔小新.jpg',
+      startAvatar: 'image/OIP-C.webp',
+      gameAvatar: 'image/nizihua.jpg'
+    };
+
     // 初始化游戏
     function initGame() {
+      // 加载图片
+      loadImages();
+      
       // 开始按钮事件
       startBtn.addEventListener('click', () => {
         startScreen.style.display = 'none';
@@ -748,6 +762,47 @@
       closeEncouragementBtn.addEventListener('click', () => {
         encouragementPopup.classList.remove('show');
       });
+    }
+
+    // 加载图片
+    function loadImages() {
+      // 加载背景图片
+      const bg = new Image();
+      bg.onload = function() {
+        document.querySelector('.shinchan-bg').style.backgroundImage = `url('${imagePaths.background}')`;
+      };
+      bg.onerror = function() {
+        console.log('背景图片加载失败，使用渐变背景');
+      };
+      bg.src = imagePaths.background;
+
+      // 加载开始页面头像
+      const startAvatar = new Image();
+      startAvatar.onload = function() {
+        const startShinchan = document.querySelector('.start-shinchan');
+        startShinchan.innerHTML = `<img src="${imagePaths.startAvatar}" alt="蜡笔小新" onerror="this.style.display='none'; this.parentNode.querySelector('span').style.display='block';">`;
+      };
+      startAvatar.onerror = function() {
+        const startShinchan = document.querySelector('.start-shinchan');
+        startShinchan.querySelector('span').style.display = 'block';
+      };
+      startAvatar.src = imagePaths.startAvatar;
+
+      // 加载游戏页面和弹窗头像
+      const gameAvatar = new Image();
+      gameAvatar.onload = function() {
+        const gameShinchans = document.querySelectorAll('.shinchan-character, .encouragement-shinchan');
+        gameShinchans.forEach(el => {
+          el.innerHTML = `<img src="${imagePaths.gameAvatar}" alt="蜡笔小新" onerror="this.style.display='none'; this.parentNode.querySelector('span').style.display='block';">`;
+        });
+      };
+      gameAvatar.onerror = function() {
+        const gameShinchans = document.querySelectorAll('.shinchan-character, .encouragement-shinchan');
+        gameShinchans.forEach(el => {
+          el.querySelector('span').style.display = 'block';
+        });
+      };
+      gameAvatar.src = imagePaths.gameAvatar;
     }
 
     // 开始游戏
@@ -1018,179 +1073,4 @@
           
           // 确保除数不为0
           for (let i = 0; i < nums2.length; i++) {
-            if (nums2[i] === 0) nums2[i] = 1;
-          }
-          
-          if (Math.random() > 0.5) {
-            // 有括号的情况 - 正确配对
-            display = `(${nums2[0]} ${ops2[0]} ${nums2[1]}) ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
-            expression = `(${nums2[0]} ${ops2[0] === '×' ? '*' : '/'} ${nums2[1]}) ${ops2[1] === '×' ? '*' : '/'} ${nums2[2]} ${ops2[2] === '×' ? '*' : '/'} ${nums2[3]}`;
-          } else {
-            // 无括号情况
-            display = `${nums2[0]} ${ops2[0]} ${nums2[1]} ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
-            expression = `${nums2[0]} ${ops2[0] === '×' ? '*' : '/'} ${nums2[1]} ${ops2[1] === '×' ? '*' : '/'} ${nums2[2]} ${ops2[2] === '×' ? '*' : '/'} ${nums2[3]}`;
-          }
-          break;
-      }
-      
-      return { display, expression };
-    }
-
-    // 生成加减乘除混合题目
-    function generateAllProblem() {
-      let display = '';
-      let expression = '';
-      
-      switch(difficulty) {
-        case 'easy':
-          // 简单：两个数字的单一运算
-          const num1 = Math.floor(Math.random() * 10) + 1;
-          const num2 = Math.floor(Math.random() * 10) + 1;
-          const op = ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)];
-          
-          if (op === '×') {
-            display = `${num1} × ${num2}`;
-            expression = `${num1} * ${num2}`;
-          } else if (op === '+') {
-            display = `${num1} + ${num2}`;
-            expression = `${num1} + ${num2}`;
-          } else if (op === '-') {
-            display = `${Math.max(num1, num2)} - ${Math.min(num1, num2)}`;
-            expression = `${Math.max(num1, num2)} - ${Math.min(num1, num2)}`;
-          } else {
-            // 除法
-            if (num2 === 0) {
-              display = `${num1} ÷ 1`;
-              expression = `${num1} / 1`;
-            } else {
-              display = `${num1 * num2} ÷ ${num2}`;
-              expression = `${num1 * num2} / ${num2}`;
-            }
-          }
-          break;
-          
-        case 'medium':
-          // 中等：三个数字的混合运算
-          const nums1 = [
-            Math.floor(Math.random() * 10) + 1,
-            Math.floor(Math.random() * 10) + 1,
-            Math.floor(Math.random() * 10) + 1
-          ];
-          const ops1 = [
-            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)],
-            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)]
-          ];
-          
-          // 确保除数不为0
-          for (let i = 0; i < nums1.length; i++) {
-            if (nums1[i] === 0) nums1[i] = 1;
-          }
-          
-          display = `${nums1[0]} ${ops1[0]} ${nums1[1]} ${ops1[1]} ${nums1[2]}`;
-          expression = `${nums1[0]} ${ops1[0] === '×' ? '*' : ops1[0] === '÷' ? '/' : ops1[0]} ${nums1[1]} ${ops1[1] === '×' ? '*' : ops1[1] === '÷' ? '/' : ops1[1]} ${nums1[2]}`;
-          break;
-          
-        case 'hard':
-          // 困难：四个数字的混合运算，可能有括号
-          const nums2 = [
-            Math.floor(Math.random() * 10) + 1,
-            Math.floor(Math.random() * 10) + 1,
-            Math.floor(Math.random() * 10) + 1,
-            Math.floor(Math.random() * 10) + 1
-          ];
-          const ops2 = [
-            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)],
-            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)],
-            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)]
-          ];
-          
-          // 确保除数不为0
-          for (let i = 0; i < nums2.length; i++) {
-            if (nums2[i] === 0) nums2[i] = 1;
-          }
-          
-          if (Math.random() > 0.5) {
-            // 有括号的情况 - 正确配对
-            display = `(${nums2[0]} ${ops2[0]} ${nums2[1]}) ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
-            expression = `(${nums2[0]} ${ops2[0] === '×' ? '*' : ops2[0] === '÷' ? '/' : ops2[0]} ${nums2[1]}) ${ops2[1] === '×' ? '*' : ops2[1] === '÷' ? '/' : ops2[1]} ${nums2[2]} ${ops2[2] === '×' ? '*' : ops2[2] === '÷' ? '/' : ops2[2]} ${nums2[3]}`;
-          } else {
-            // 无括号情况
-            display = `${nums2[0]} ${ops2[0]} ${nums2[1]} ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
-            expression = `${nums2[0]} ${ops2[0] === '×' ? '*' : ops2[0] === '÷' ? '/' : ops2[0]} ${nums2[1]} ${ops2[1] === '×' ? '*' : ops2[1] === '÷' ? '/' : ops2[1]} ${nums2[2]} ${ops2[2] === '×' ? '*' : ops2[2] === '÷' ? '/' : ops2[2]} ${nums2[3]}`;
-          }
-          break;
-      }
-      
-      return { display, expression };
-    }
-
-    // 检查答案
-    function check() {
-      const userAnswer = parseFractionInput(answerInput.value.trim());
-      
-      if (isNaN(userAnswer)) {
-        resultElement.textContent = "请输入有效的数字或分数！";
-        resultElement.className = "wrong";
-        return;
-      }
-      
-      // 允许一定的误差范围
-      const tolerance = 0.0001;
-      const isCorrect = Math.abs(userAnswer - correctAnswer) < tolerance;
-      
-      if (isCorrect) {
-        resultElement.innerHTML = `<span class="correct">✓ 正确！</span>`;
-        resultElement.className = "correct";
-        totalCorrect++;
-        streak++;
-        
-        // 检查是否连续答对10题
-        if (streak === 10) {
-          showEncouragement();
-          streak = 0; // 重置连续答对计数
-        }
-        
-        updateStats();
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = "0.5";
-        nextBtn.classList.remove("hidden");
-      } else {
-        resultElement.innerHTML = `<span class="wrong">✗ 错误！正确答案是: ${correctAnswerFraction.display}</span>`;
-        resultElement.className = "wrong";
-        submitBtn.classList.add("wrong");
-        streak = 0;
-      }
-    }
-
-    // 显示鼓励弹窗
-    function showEncouragement() {
-      encouragementPopup.classList.add('show');
-    }
-
-    // 更新统计信息
-    function updateStats() {
-      totalCorrectElement.textContent = totalCorrect;
-      
-      if (totalCorrect > bestTotal) {
-        bestTotal = totalCorrect;
-        bestTotalElement.textContent = bestTotal;
-      }
-    }
-
-    // 开始计时器
-    function startTimer() {
-      startTime = new Date();
-      clearInterval(timerInterval);
-      
-      timerInterval = setInterval(() => {
-        const currentTime = new Date();
-        const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
-        timerElement.textContent = `${elapsedSeconds}秒`;
-      }, 1000);
-    }
-
-    // 初始化游戏
-    initGame();
-  </script>
-</body>
-</html>
+            if (nums2[i] === 0) nums2[i] = 1
