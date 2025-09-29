@@ -3,205 +3,1194 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🎯 乘法小达人</title>
+  <title>🎯 数学小达人 - 蜡笔小新版</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center;
-      padding: 40px;
+    * {
       margin: 0;
-      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-      min-height: 100vh;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Comic Sans MS', 'Microsoft YaHei', sans-serif;
     }
-
-    .container {
-      background: white;
-      border-radius: 20px;
-      padding: 30px 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    
+    body {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* 蜡笔小新背景 */
+    .shinchan-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('image/蜡笔小新.jpg');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15;
+      z-index: -1;
+    }
+    
+    /* 开始页面 */
+    .start-screen {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      padding: 40px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
       max-width: 500px;
       width: 90%;
-    }
-
-    h1 {
-      color: #2c3e50;
-      margin: 0 0 10px 0;
-      font-size: 1.8em;
-    }
-
-    .subtitle {
-      color: #7f8c8d;
-      font-size: 1.1em;
-      margin-bottom: 20px;
-    }
-
-    #streak {
-      font-size: 1.3em;
-      color: #f39c12;
-      margin: 15px 0;
-      font-weight: bold;
-      background: #fff3cd;
-      padding: 8px 15px;
-      border-radius: 12px;
-      display: inline-block;
-    }
-
-    #problem {
-      font-size: 3em;
-      margin: 20px 0;
-      font-weight: bold;
-      color: #2980b9;
-    }
-
-    input {
-      font-size: 1.6em;
-      padding: 15px;
-      width: 180px;
       text-align: center;
-      border: 3px solid #3498db;
-      border-radius: 12px;
-      outline: none;
-      transition: all 0.3s;
-      margin: 10px 0;
+      border: 8px solid #ff6b8b;
+      position: relative;
+      overflow: hidden;
     }
-
-    input:focus {
-      border-color: #e74c3c;
-      transform: scale(1.05);
-      box-shadow: 0 0 15px rgba(231, 76, 60, 0.3);
+    
+    .start-title {
+      color: #ff4081;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 3px 3px 0 #ffd166;
+      letter-spacing: 1px;
     }
-
-    .buttons {
-      margin: 20px 0;
+    
+    .start-subtitle {
+      color: #5a5a5a;
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      font-weight: bold;
     }
-
-    button {
-      font-size: 1.2em;
-      padding: 12px 25px;
-      margin: 0 10px;
-      background-color: #3498db;
+    
+    .start-shinchan {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 30px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      animation: bounce 2s infinite alternate;
+      overflow: hidden;
+    }
+    
+    .start-shinchan img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .start-btn {
+      font-size: 1.5rem;
+      padding: 15px 40px;
+      background-color: #ff6b8b;
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      font-weight: bold;
+      box-shadow: 0 5px 0 rgba(0,0,0,0.2);
+      margin-top: 20px;
+    }
+    
+    .start-btn:hover {
+      background-color: #ff4081;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 0 rgba(0,0,0,0.2);
+    }
+    
+    /* 选择页面 */
+    .selection-screen {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      padding: 40px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      border: 8px solid #ff6b8b;
+      position: relative;
+      overflow: hidden;
+      display: none;
+    }
+    
+    .selection-title {
+      color: #ff4081;
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      text-shadow: 3px 3px 0 #ffd166;
+    }
+    
+    .mode-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 30px 0;
+    }
+    
+    .mode-btn {
+      font-size: 1.3rem;
+      padding: 15px 30px;
+      background-color: #4ecdc4;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-family: inherit;
+      font-weight: bold;
+      box-shadow: 0 5px 0 rgba(0,0,0,0.2);
+    }
+    
+    .mode-btn:hover {
+      background-color: #3db8af;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 0 rgba(0,0,0,0.2);
+    }
+    
+    /* 游戏页面 */
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      padding: 30px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      max-width: 700px;
+      width: 95%;
+      text-align: center;
+      border: 8px solid #ff6b8b;
+      position: relative;
+      overflow: hidden;
+      display: none;
+    }
+    
+    .header {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    h1 {
+      color: #ff4081;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 3px 3px 0 #ffd166;
+      letter-spacing: 1px;
+    }
+    
+    .subtitle {
+      color: #5a5a5a;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    
+    .shinchan-character {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      animation: bounce 2s infinite alternate;
+      overflow: hidden;
+    }
+    
+    .shinchan-character img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-15px); }
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    
+    .stat-box {
+      background: #fff;
+      padding: 12px 15px;
+      border-radius: 15px;
+      flex: 1;
+      margin: 5px;
+      min-width: 120px;
+      border: 3px solid #4ecdc4;
+      box-shadow: 0 5px 0 rgba(0,0,0,0.1);
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: #5a5a5a;
+      font-weight: bold;
+    }
+    
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #ff6b8b;
+    }
+    
+    #total-correct {
+      background: #fff9c4;
+      border-color: #ffd166;
+    }
+    
+    #timer {
+      background: #e3f2fd;
+      border-color: #4ecdc4;
+    }
+    
+    #best-total {
+      background: #ffebee;
+      border-color: #ff6b8b;
+    }
+    
+    .difficulty-selector {
+      margin: 20px 0;
+    }
+    
+    .difficulty-btn {
+      background: #e0e0e0;
+      border: none;
+      padding: 10px 15px;
+      margin: 0 5px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: bold;
+      font-family: inherit;
+    }
+    
+    .difficulty-btn.active {
+      background: #ff6b8b;
+      color: white;
+      transform: scale(1.05);
+    }
+    
+    #problem {
+      font-size: 2.5rem;
+      margin: 25px 0;
+      font-weight: bold;
+      color: #2a2d43;
+      transition: all 0.3s;
+      background: #f7f9fc;
+      padding: 20px;
+      border-radius: 15px;
+      border: 3px dashed #4ecdc4;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.4;
+    }
+    
+    /* 答题框样式 - 增大并居中 */
+    .input-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 25px 0;
+      width: 100%;
+    }
+    
+    input {
+      font-size: 2.2rem;
+      padding: 20px;
+      width: 280px;
+      text-align: center;
+      border: 4px solid #ff6b8b;
+      border-radius: 20px;
+      outline: none;
+      transition: all 0.3s;
+      font-family: inherit;
+      font-weight: bold;
+      background: #fff;
+      display: block;
+      margin: 0 auto;
+    }
+    
+    input:focus {
+      border-color: #4ecdc4;
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(78, 205, 196, 0.5);
+    }
+    
+    .buttons {
+      margin: 25px 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    button {
+      font-size: 1.3rem;
+      padding: 15px 30px;
+      background-color: #ff6b8b;
+      color: white;
+      border: none;
+      border-radius: 15px;
       cursor: pointer;
       opacity: 1;
       transition: all 0.3s;
+      font-family: inherit;
+      font-weight: bold;
+      box-shadow: 0 5px 0 rgba(0,0,0,0.2);
+      min-width: 150px;
     }
-
+    
     button:hover {
-      background-color: #2980b9;
-      transform: translateY(-2px);
+      background-color: #ff4081;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 0 rgba(0,0,0,0.2);
     }
-
+    
     button:active {
       transform: translateY(0);
+      box-shadow: 0 3px 0 rgba(0,0,0,0.2);
     }
-
+    
     #submitBtn.wrong {
-      background-color: #e74c3c;
+      background-color: #ff5252;
     }
-
+    
     #result {
-      font-size: 1.8em;
+      font-size: 1.8rem;
       margin: 20px 0;
-      height: 40px;
+      height: 50px;
       font-weight: bold;
-      min-height: 40px;
+      min-height: 50px;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
     }
-
+    
     .correct {
-      color: #27ae60;
+      color: #4ecdc4;
+      animation: pulse 0.5s;
     }
-
+    
     .wrong {
-      color: #e74c3c;
+      color: #ff5252;
+      animation: shake 0.5s;
     }
-
+    
     .hidden {
       display: none !important;
+    }
+    
+    /* 分数显示样式 */
+    .fraction {
+      display: inline-block;
+      text-align: center;
+      vertical-align: middle;
+    }
+    
+    .fraction span {
+      display: block;
+    }
+    
+    .fraction .numerator {
+      border-bottom: 2px solid #2a2d43;
+      padding: 0 5px;
+    }
+    
+    .fraction .denominator {
+      padding: 0 5px;
+    }
+    
+    /* 蜡笔小新鼓励弹窗 */
+    .encouragement-popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s;
+    }
+    
+    .encouragement-popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .encouragement-content {
+      background: white;
+      border-radius: 25px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      border: 8px solid #ff6b8b;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      transform: scale(0.7);
+      transition: transform 0.5s;
+    }
+    
+    .encouragement-popup.show .encouragement-content {
+      transform: scale(1);
+    }
+    
+    .encouragement-shinchan {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      animation: bounce 1s infinite alternate;
+      overflow: hidden;
+    }
+    
+    .encouragement-shinchan img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .encouragement-message {
+      font-size: 1.8rem;
+      color: #ff4081;
+      margin-bottom: 20px;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+    
+    .encouragement-subtitle {
+      font-size: 1.2rem;
+      color: #5a5a5a;
+      margin-bottom: 25px;
+    }
+    
+    .close-encouragement {
+      background: #4ecdc4;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 15px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+    
+    .close-encouragement:hover {
+      background: #3db8af;
+      transform: translateY(-3px);
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      opacity: 0;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    .footer {
+      margin-top: 20px;
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 480px) {
+      .container, .start-screen, .selection-screen {
+        padding: 20px;
+      }
+      
+      h1, .start-title, .selection-title {
+        font-size: 2rem;
+      }
+      
+      #problem {
+        font-size: 1.8rem;
+      }
+      
+      input {
+        font-size: 1.8rem;
+        width: 220px;
+        padding: 15px;
+      }
+      
+      button {
+        font-size: 1.1rem;
+        padding: 12px 20px;
+        min-width: 120px;
+      }
+      
+      .stat-box {
+        min-width: 100px;
+      }
+      
+      .shinchan-character, .start-shinchan {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .encouragement-content {
+        padding: 20px;
+      }
+      
+      .encouragement-message {
+        font-size: 1.5rem;
+      }
+      
+      .encouragement-shinchan {
+        width: 120px;
+        height: 120px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- 蜡笔小新背景 -->
+  <div class="shinchan-bg"></div>
 
-  <div class="container">
-    <h1>🎯 乘法小达人</h1>
-    <p class="subtitle">来挑战连续答对吧！</p>
+  <!-- 开始页面 -->
+  <div class="start-screen" id="startScreen">
+    <h1 class="start-title">🎯 数学小达人</h1>
+    <p class="start-subtitle">和蜡笔小新一起学数学！</p>
+    <div class="start-shinchan">
+      <img src="image/OIP-C.webp" alt="蜡笔小新">
+    </div>
+    <button class="start-btn" id="startBtn">开始挑战</button>
+  </div>
+
+  <!-- 选择页面 -->
+  <div class="selection-screen" id="selectionScreen">
+    <h1 class="selection-title">选择挑战模式</h1>
+    <div class="mode-buttons">
+      <button class="mode-btn" data-mode="add-sub">加减混合</button>
+      <button class="mode-btn" data-mode="mul-div">乘除混合</button>
+      <button class="mode-btn" data-mode="all">加减乘除混合</button>
+    </div>
+  </div>
+
+  <!-- 蜡笔小新鼓励弹窗 -->
+  <div class="encouragement-popup" id="encouragementPopup">
+    <div class="encouragement-content">
+      <div class="encouragement-shinchan">
+        <img src="image/nizihua.jpg" alt="蜡笔小新">
+      </div>
+      <div class="encouragement-message">你好棒啊，都连续答对十道了！</div>
+      <div class="encouragement-subtitle">继续加油，动感超人！</div>
+      <button class="close-encouragement" id="closeEncouragement">继续挑战</button>
+    </div>
+  </div>
+
+  <!-- 游戏页面 -->
+  <div class="container" id="gameContainer">
+    <div class="header">
+      <h1>🎯 数学小达人</h1>
+      <p class="subtitle">和蜡笔小新一起学数学！</p>
+      <div class="shinchan-character">
+        <img src="image/nizihua.jpg" alt="蜡笔小新">
+      </div>
+    </div>
     
-    <div id="streak">✅ 已连续答对：0 题</div>
+    <div class="stats-container">
+      <div id="total-correct" class="stat-box">
+        <div class="stat-label">累计答对</div>
+        <div class="stat-value">0</div>
+      </div>
+      <div id="timer" class="stat-box">
+        <div class="stat-label">用时</div>
+        <div class="stat-value">0秒</div>
+      </div>
+      <div id="best-total" class="stat-box">
+        <div class="stat-label">最高答对</div>
+        <div class="stat-value">0</div>
+      </div>
+    </div>
+    
+    <div class="difficulty-selector">
+      <button class="difficulty-btn active" data-level="easy">简单</button>
+      <button class="difficulty-btn" data-level="medium">中等</button>
+      <button class="difficulty-btn" data-level="hard">困难</button>
+    </div>
     
     <div id="problem">6 × 7 = ?</div>
     
-    <input type="number" id="answer" autofocus placeholder="输入答案" />
+    <div class="input-container">
+      <input type="text" id="answer" autofocus placeholder="输入答案 (如: 2/3)" />
+    </div>
     
     <div class="buttons">
-      <button id="submitBtn" onclick="check()">提交</button>
-      <button id="nextBtn" class="hidden" onclick="next()">下一题</button>
+      <button id="submitBtn">提交答案</button>
+      <button id="nextBtn" class="hidden">下一题</button>
     </div>
     
     <div id="result"></div>
+    
+    <div class="footer">
+      <p>答对越多，蜡笔小新越开心哦！</p>
+    </div>
   </div>
 
   <script>
+    // 游戏状态
     let correctAnswer;
+    let correctAnswerFraction;
     let streak = 0;
+    let totalCorrect = 0;
+    let bestTotal = 0;
+    let startTime;
+    let timerInterval;
+    let difficulty = 'easy';
+    let gameMode = 'mul-div';
 
-    function next() {
-      const a = Math.floor(Math.random() * 10);
-      const b = Math.floor(Math.random() * 10);
-      correctAnswer = a * b;
-      document.getElementById("problem").textContent = `${a} × ${b} = ?`;
-      document.getElementById("answer").value = "";
-      document.getElementById("result").textContent = "";
-      document.getElementById("result").className = "";
-      document.getElementById("submitBtn").classList.remove("wrong");
-      document.getElementById("submitBtn").disabled = false;
-      document.getElementById("submitBtn").style.opacity = "1";
-      document.getElementById("nextBtn").classList.add("hidden");
-      document.getElementById("answer").focus();
+    // DOM 元素
+    const startScreen = document.getElementById("startScreen");
+    const selectionScreen = document.getElementById("selectionScreen");
+    const gameContainer = document.getElementById("gameContainer");
+    const startBtn = document.getElementById("startBtn");
+    const modeBtns = document.querySelectorAll(".mode-btn");
+    
+    const problemElement = document.getElementById("problem");
+    const answerInput = document.getElementById("answer");
+    const resultElement = document.getElementById("result");
+    const submitBtn = document.getElementById("submitBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const totalCorrectElement = document.getElementById("total-correct").querySelector(".stat-value");
+    const timerElement = document.getElementById("timer").querySelector(".stat-value");
+    const bestTotalElement = document.getElementById("best-total").querySelector(".stat-value");
+    const difficultyBtns = document.querySelectorAll(".difficulty-btn");
+    const encouragementPopup = document.getElementById("encouragementPopup");
+    const closeEncouragementBtn = document.getElementById("closeEncouragement");
+
+    // 初始化游戏
+    function initGame() {
+      // 开始按钮事件
+      startBtn.addEventListener('click', () => {
+        startScreen.style.display = 'none';
+        selectionScreen.style.display = 'block';
+      });
+      
+      // 模式选择事件
+      modeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          gameMode = btn.dataset.mode;
+          selectionScreen.style.display = 'none';
+          gameContainer.style.display = 'block';
+          startGame();
+        });
+      });
+      
+      // 难度选择事件
+      difficultyBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          difficultyBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          difficulty = btn.dataset.level;
+          next();
+        });
+      });
+      
+      // 添加键盘事件
+      answerInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          check();
+        }
+      });
+      
+      submitBtn.addEventListener('click', check);
+      nextBtn.addEventListener('click', next);
+      
+      // 关闭鼓励弹窗事件
+      closeEncouragementBtn.addEventListener('click', () => {
+        encouragementPopup.classList.remove('show');
+      });
     }
 
-    function check() {
-      const user = parseInt(document.getElementById("answer").value);
-      const resultDiv = document.getElementById("result");
-      const submitBtn = document.getElementById("submitBtn");
+    // 开始游戏
+    function startGame() {
+      totalCorrect = 0;
+      streak = 0;
+      updateStats();
+      startTimer();
+      next();
+    }
 
-      if (isNaN(user)) {
-        resultDiv.textContent = "请输入一个数字！";
-        resultDiv.className = "wrong";
+    // 生成下一题
+    function next() {
+      let problem = '';
+      let expression = '';
+      
+      // 根据游戏模式和难度生成题目
+      switch(gameMode) {
+        case 'add-sub':
+          problem = generateAddSubProblem();
+          break;
+          
+        case 'mul-div':
+          problem = generateMulDivProblem();
+          break;
+          
+        case 'all':
+          problem = generateAllProblem();
+          break;
+      }
+      
+      // 计算正确答案
+      try {
+        correctAnswer = eval(problem.expression);
+        // 确保答案有效
+        if (isNaN(correctAnswer) || !isFinite(correctAnswer)) {
+          return next(); // 重新生成题目
+        }
+        
+        // 计算分数形式
+        correctAnswerFraction = decimalToFraction(correctAnswer);
+      } catch (e) {
+        return next(); // 重新生成题目
+      }
+      
+      // 显示题目
+      problemElement.textContent = problem.display;
+      answerInput.value = "";
+      resultElement.textContent = "";
+      resultElement.className = "";
+      submitBtn.classList.remove("wrong");
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = "1";
+      nextBtn.classList.add("hidden");
+      answerInput.focus();
+    }
+
+    // 小数转分数
+    function decimalToFraction(decimal) {
+      // 如果是整数，直接返回
+      if (Number.isInteger(decimal)) {
+        return { numerator: decimal, denominator: 1, display: decimal.toString() };
+      }
+      
+      // 处理小数
+      const tolerance = 1.0E-6;
+      let numerator = 1;
+      let denominator = 1;
+      let fraction = numerator / denominator;
+      
+      // 尝试找到最接近的分数
+      while (Math.abs(fraction - decimal) > tolerance) {
+        if (fraction < decimal) {
+          numerator++;
+        } else {
+          denominator++;
+          numerator = Math.round(decimal * denominator);
+        }
+        fraction = numerator / denominator;
+        
+        // 防止无限循环
+        if (denominator > 10000) {
+          break;
+        }
+      }
+      
+      // 约分
+      const gcdValue = gcd(numerator, denominator);
+      numerator /= gcdValue;
+      denominator /= gcdValue;
+      
+      // 生成显示格式
+      let display;
+      if (denominator === 1) {
+        display = numerator.toString();
+      } else {
+        display = `<div class="fraction">
+          <span class="numerator">${numerator}</span>
+          <span class="denominator">${denominator}</span>
+        </div>`;
+      }
+      
+      return { numerator, denominator, display };
+    }
+
+    // 计算最大公约数
+    function gcd(a, b) {
+      return b ? gcd(b, a % b) : a;
+    }
+
+    // 解析用户输入的分数
+    function parseFractionInput(input) {
+      // 如果是整数
+      if (/^-?\d+$/.test(input)) {
+        return parseInt(input);
+      }
+      
+      // 如果是分数格式 a/b
+      const fractionMatch = input.match(/^(-?\d+)\/(-?\d+)$/);
+      if (fractionMatch) {
+        const numerator = parseInt(fractionMatch[1]);
+        const denominator = parseInt(fractionMatch[2]);
+        if (denominator === 0) return NaN;
+        return numerator / denominator;
+      }
+      
+      // 如果是小数
+      const decimalMatch = input.match(/^-?\d*\.?\d+$/);
+      if (decimalMatch) {
+        return parseFloat(input);
+      }
+      
+      return NaN;
+    }
+
+    // 生成加减混合题目
+    function generateAddSubProblem() {
+      let display = '';
+      let expression = '';
+      
+      switch(difficulty) {
+        case 'easy':
+          // 简单：两个数字的加减
+          const num1 = Math.floor(Math.random() * 10) + 1;
+          const num2 = Math.floor(Math.random() * 10) + 1;
+          const op = Math.random() > 0.5 ? '+' : '-';
+          
+          display = `${num1} ${op} ${num2}`;
+          expression = op === '+' ? `${num1} + ${num2}` : `${num1} - ${num2}`;
+          break;
+          
+        case 'medium':
+          // 中等：三个数字的加减混合
+          const nums1 = [
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1
+          ];
+          const ops1 = [
+            Math.random() > 0.5 ? '+' : '-',
+            Math.random() > 0.5 ? '+' : '-'
+          ];
+          
+          display = `${nums1[0]} ${ops1[0]} ${nums1[1]} ${ops1[1]} ${nums1[2]}`;
+          expression = `${nums1[0]} ${ops1[0]} ${nums1[1]} ${ops1[1]} ${nums1[2]}`;
+          break;
+          
+        case 'hard':
+          // 困难：四个数字的加减混合，可能有括号
+          const nums2 = [
+            Math.floor(Math.random() * 100) + 1,
+            Math.floor(Math.random() * 100) + 1,
+            Math.floor(Math.random() * 100) + 1,
+            Math.floor(Math.random() * 100) + 1
+          ];
+          const ops2 = [
+            Math.random() > 0.5 ? '+' : '-',
+            Math.random() > 0.5 ? '+' : '-',
+            Math.random() > 0.5 ? '+' : '-'
+          ];
+          
+          // 确保括号正确配对
+          if (Math.random() > 0.5) {
+            // 有括号的情况 - 正确配对
+            display = `(${nums2[0]} ${ops2[0]} ${nums2[1]}) ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
+            expression = `(${nums2[0]} ${ops2[0]} ${nums2[1]}) ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
+          } else {
+            // 无括号情况
+            display = `${nums2[0]} ${ops2[0]} ${nums2[1]} ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
+            expression = `${nums2[0]} ${ops2[0]} ${nums2[1]} ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
+          }
+          break;
+      }
+      
+      return { display, expression };
+    }
+
+    // 生成乘除混合题目
+    function generateMulDivProblem() {
+      let display = '';
+      let expression = '';
+      
+      switch(difficulty) {
+        case 'easy':
+          // 简单：两个数字的乘除
+          const num1 = Math.floor(Math.random() * 10) + 1;
+          let num2 = Math.floor(Math.random() * 10) + 1;
+          const op = Math.random() > 0.5 ? '×' : '÷';
+          
+          if (op === '×') {
+            display = `${num1} × ${num2}`;
+            expression = `${num1} * ${num2}`;
+          } else {
+            // 确保除法结果是整数且除数不为0
+            if (num2 === 0) num2 = 1;
+            const result = num1;
+            const divisor = num2;
+            display = `${result * divisor} ÷ ${divisor}`;
+            expression = `${result * divisor} / ${divisor}`;
+          }
+          break;
+          
+        case 'medium':
+          // 中等：三个数字的乘除混合
+          const nums1 = [
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1
+          ];
+          const ops1 = [
+            Math.random() > 0.5 ? '×' : '÷',
+            Math.random() > 0.5 ? '×' : '÷'
+          ];
+          
+          // 构建表达式 - 简化逻辑，避免复杂嵌套
+          let expr = nums1[0].toString();
+          let disp = nums1[0].toString();
+          
+          for (let i = 0; i < 2; i++) {
+            if (ops1[i] === '×') {
+              expr += ` * ${nums1[i+1]}`;
+              disp += ` × ${nums1[i+1]}`;
+            } else {
+              // 确保除数不为0
+              if (nums1[i+1] === 0) nums1[i+1] = 1;
+              expr += ` / ${nums1[i+1]}`;
+              disp += ` ÷ ${nums1[i+1]}`;
+            }
+          }
+          
+          display = disp;
+          expression = expr;
+          break;
+          
+        case 'hard':
+          // 困难：四个数字的乘除混合，可能有括号
+          const nums2 = [
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1
+          ];
+          const ops2 = [
+            Math.random() > 0.5 ? '×' : '÷',
+            Math.random() > 0.5 ? '×' : '÷',
+            Math.random() > 0.5 ? '×' : '÷'
+          ];
+          
+          // 确保除数不为0
+          for (let i = 0; i < nums2.length; i++) {
+            if (nums2[i] === 0) nums2[i] = 1;
+          }
+          
+          if (Math.random() > 0.5) {
+            // 有括号的情况 - 正确配对
+            display = `(${nums2[0]} ${ops2[0]} ${nums2[1]}) ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
+            expression = `(${nums2[0]} ${ops2[0] === '×' ? '*' : '/'} ${nums2[1]}) ${ops2[1] === '×' ? '*' : '/'} ${nums2[2]} ${ops2[2] === '×' ? '*' : '/'} ${nums2[3]}`;
+          } else {
+            // 无括号情况
+            display = `${nums2[0]} ${ops2[0]} ${nums2[1]} ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
+            expression = `${nums2[0]} ${ops2[0] === '×' ? '*' : '/'} ${nums2[1]} ${ops2[1] === '×' ? '*' : '/'} ${nums2[2]} ${ops2[2] === '×' ? '*' : '/'} ${nums2[3]}`;
+          }
+          break;
+      }
+      
+      return { display, expression };
+    }
+
+    // 生成加减乘除混合题目
+    function generateAllProblem() {
+      let display = '';
+      let expression = '';
+      
+      switch(difficulty) {
+        case 'easy':
+          // 简单：两个数字的单一运算
+          const num1 = Math.floor(Math.random() * 10) + 1;
+          const num2 = Math.floor(Math.random() * 10) + 1;
+          const op = ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)];
+          
+          if (op === '×') {
+            display = `${num1} × ${num2}`;
+            expression = `${num1} * ${num2}`;
+          } else if (op === '+') {
+            display = `${num1} + ${num2}`;
+            expression = `${num1} + ${num2}`;
+          } else if (op === '-') {
+            display = `${Math.max(num1, num2)} - ${Math.min(num1, num2)}`;
+            expression = `${Math.max(num1, num2)} - ${Math.min(num1, num2)}`;
+          } else {
+            // 除法
+            if (num2 === 0) {
+              display = `${num1} ÷ 1`;
+              expression = `${num1} / 1`;
+            } else {
+              display = `${num1 * num2} ÷ ${num2}`;
+              expression = `${num1 * num2} / ${num2}`;
+            }
+          }
+          break;
+          
+        case 'medium':
+          // 中等：三个数字的混合运算
+          const nums1 = [
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1
+          ];
+          const ops1 = [
+            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)],
+            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)]
+          ];
+          
+          // 确保除数不为0
+          for (let i = 0; i < nums1.length; i++) {
+            if (nums1[i] === 0) nums1[i] = 1;
+          }
+          
+          display = `${nums1[0]} ${ops1[0]} ${nums1[1]} ${ops1[1]} ${nums1[2]}`;
+          expression = `${nums1[0]} ${ops1[0] === '×' ? '*' : ops1[0] === '÷' ? '/' : ops1[0]} ${nums1[1]} ${ops1[1] === '×' ? '*' : ops1[1] === '÷' ? '/' : ops1[1]} ${nums1[2]}`;
+          break;
+          
+        case 'hard':
+          // 困难：四个数字的混合运算，可能有括号
+          const nums2 = [
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1,
+            Math.floor(Math.random() * 10) + 1
+          ];
+          const ops2 = [
+            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)],
+            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)],
+            ['+', '-', '×', '÷'][Math.floor(Math.random() * 4)]
+          ];
+          
+          // 确保除数不为0
+          for (let i = 0; i < nums2.length; i++) {
+            if (nums2[i] === 0) nums2[i] = 1;
+          }
+          
+          if (Math.random() > 0.5) {
+            // 有括号的情况 - 正确配对
+            display = `(${nums2[0]} ${ops2[0]} ${nums2[1]}) ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
+            expression = `(${nums2[0]} ${ops2[0] === '×' ? '*' : ops2[0] === '÷' ? '/' : ops2[0]} ${nums2[1]}) ${ops2[1] === '×' ? '*' : ops2[1] === '÷' ? '/' : ops2[1]} ${nums2[2]} ${ops2[2] === '×' ? '*' : ops2[2] === '÷' ? '/' : ops2[2]} ${nums2[3]}`;
+          } else {
+            // 无括号情况
+            display = `${nums2[0]} ${ops2[0]} ${nums2[1]} ${ops2[1]} ${nums2[2]} ${ops2[2]} ${nums2[3]}`;
+            expression = `${nums2[0]} ${ops2[0] === '×' ? '*' : ops2[0] === '÷' ? '/' : ops2[0]} ${nums2[1]} ${ops2[1] === '×' ? '*' : ops2[1] === '÷' ? '/' : ops2[1]} ${nums2[2]} ${ops2[2] === '×' ? '*' : ops2[2] === '÷' ? '/' : ops2[2]} ${nums2[3]}`;
+          }
+          break;
+      }
+      
+      return { display, expression };
+    }
+
+    // 检查答案
+    function check() {
+      const userAnswer = parseFractionInput(answerInput.value.trim());
+      
+      if (isNaN(userAnswer)) {
+        resultElement.textContent = "请输入有效的数字或分数！";
+        resultElement.className = "wrong";
         return;
       }
-
-      if (user === correctAnswer) {
+      
+      // 允许一定的误差范围
+      const tolerance = 0.0001;
+      const isCorrect = Math.abs(userAnswer - correctAnswer) < tolerance;
+      
+      if (isCorrect) {
+        resultElement.innerHTML = `<span class="correct">✓ 正确！</span>`;
+        resultElement.className = "correct";
+        totalCorrect++;
         streak++;
-        resultDiv.textContent = "🎉 正确！";
-        resultDiv.className = "correct";
-        document.getElementById("streak").textContent = `✅ 已连续答对：${streak} 题`;
         
-        // 自动下一题（2秒后）
+        // 检查是否连续答对10题
+        if (streak === 10) {
+          showEncouragement();
+          streak = 0; // 重置连续答对计数
+        }
+        
+        updateStats();
         submitBtn.disabled = true;
-        submitBtn.style.opacity = "0.6";
-        setTimeout(next, 1000); // 1秒后自动下一题
+        submitBtn.style.opacity = "0.5";
+        nextBtn.classList.remove("hidden");
       } else {
-        resultDiv.textContent = `❌ 错了！正确答案是 ${correctAnswer}`;
-        resultDiv.className = "wrong";
-        streak = 0;
-        document.getElementById("streak").textContent = `✅ 已连续答对：0 题`;
+        resultElement.innerHTML = `<span class="wrong">✗ 错误！正确答案是: ${correctAnswerFraction.display}</span>`;
+        resultElement.className = "wrong";
         submitBtn.classList.add("wrong");
-        
-        // 显示“下一题”按钮
-        document.getElementById("nextBtn").classList.remove("hidden");
+        streak = 0;
       }
     }
 
-    // 初始化第一题
-    next();
-  </script>
+    // 显示鼓励弹窗
+    function showEncouragement() {
+      encouragementPopup.classList.add('show');
+    }
 
+    // 更新统计信息
+    function updateStats() {
+      totalCorrectElement.textContent = totalCorrect;
+      
+      if (totalCorrect > bestTotal) {
+        bestTotal = totalCorrect;
+        bestTotalElement.textContent = bestTotal;
+      }
+    }
+
+    // 开始计时器
+    function startTimer() {
+      startTime = new Date();
+      clearInterval(timerInterval);
+      
+      timerInterval = setInterval(() => {
+        const currentTime = new Date();
+        const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
+        timerElement.textContent = `${elapsedSeconds}秒`;
+      }, 1000);
+    }
+
+    // 初始化游戏
+    initGame();
+  </script>
 </body>
 </html>
